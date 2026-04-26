@@ -7,7 +7,6 @@ REST API pre správu organizačných štruktúr firiem s 4-úrovňovou hierarchi
 - [Technológie](#technológie)
 - [Požiadavky](#požiadavky)
 - [Inštalácia a Spustenie](#inštalácia-a-spustenie)
-- [Štruktúra Projektu](#štruktúra-projektu)
 - [API Endpoints](#api-endpoints)
 - [Testovanie](#testovanie)
 - [Databáza](#databáza)
@@ -74,15 +73,12 @@ dotnet run --project OrganizationStructure.Api
 
 Aplikácia bude dostupná na:
 - **HTTPS:** https://localhost:5001
-- **HTTP:** http://localhost:5000
+- **HTTP:** http://localhost:5248
 - **Scalar UI:** https://localhost:5001/scalar/v1
 
 ---
 
-## 📁 Štruktúra Projektu
-OrganizationStructure.Api/ ├── Controllers/              # API Endpoints │   ├── EmployeesController.cs │   ├── CompaniesController.cs │   ├── DivisionsController.cs │   ├── ProjectsController.cs │   └── DepartmentsController.cs │ ├── Domain/ │   └── Entities/            # Domain Models │       ├── Employee.cs │       ├── Company.cs │       ├── Division.cs │       ├── Project.cs │       └── Department.cs │ ├── DTOs/                    # Data Transfer Objects │   ├── Employees/ │   ├── Companies/ │   ├── Divisions/ │   ├── Projects/ │   └── Departments/ │ ├── Services/                # Business Logic │   ├── Interfaces/ │   └── Implementations/ │ ├── Repositories/            # Data Access │   ├── IRepository.cs │   └── Repository.cs │ ├── Validators/              # FluentValidation │   └── CreateOrUpdate*Validator.cs │ ├── Data/ │   └── ApplicationDbContext.cs  # EF Core DbContext │ ├── Migrations/              # EF Core Migrations │   └── 20260426182544_InitialCreate.cs │ └── Database/ └── InitialSetup.sql     # Manuálny SQL skript
 
----
 
 ## 🌐 API Endpoints
 
