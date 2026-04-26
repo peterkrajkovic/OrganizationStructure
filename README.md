@@ -158,10 +158,6 @@ curl https://localhost:5001/api/employees --insecure
 
 ## 💾 Databáza
 
-### Dátový Model
-─────────────┐ │  Employee   │──────────────┐ │             │              │ │ Id (PK)     │              │ │ Title       │              │ │ FirstName   │              │ │ LastName    │              ▼ │ Phone       │       ┌──────────────┐ │ Email (UQ)  │       │   Company    │ │ CreatedAt   │       │              │ │ UpdatedAt   │◄──────│ Id (PK)      │ └─────────────┘       │ Name         │ │ Code (UQ)    │ │ DirectorId   │ │ CreatedAt    │ │ UpdatedAt    │ └──────┬───────┘ │ ▼ ┌──────────────┐ │   Division   │ │              │ │ Id (PK)      │ │ Name         │ │ Code         │ │ CompanyId    │ │ ManagerId    │ │ CreatedAt    │ │ UpdatedAt    │ └──────┬───────┘ │ ▼ ┌──────────────┐ │   Project    │ │              │ │ Id (PK)      │ │ Name         │ │ Code         │ │ DivisionId   │ │ ManagerId    │ │ CreatedAt    │ │ UpdatedAt    │ └──────┬───────┘ │ ▼ ┌──────────────┐ │  Department  │ │              │ │ Id (PK)      │ │ Name         │ │ Code         │ │ ProjectId    │ │ ManagerId    │ │ CreatedAt    │ │ UpdatedAt    │ └──────────────┘
-
-
 ### Pravidlá
 - ✅ **Unique Constraints:** Email zamestnancov, kódy firiem, kódy v rámci parent entity
 - ✅ **Cascade Delete:** Vymazanie firmy vymaže divízie → projekty → oddelenia
@@ -172,10 +168,6 @@ curl https://localhost:5001/api/employees --insecure
 -- Zobrazíte celú hierarchiu SELECT c.Name AS Company, d.Name AS Division, p.Name AS Project, dep.Name AS Department, e.FirstName + ' ' + e.LastName AS Manager FROM Companies c LEFT JOIN Divisions d ON c.Id = d.CompanyId LEFT JOIN Projects p ON d.Id = p.DivisionId LEFT JOIN Departments dep ON p.Id = dep.ProjectId LEFT JOIN Employees e ON dep.ManagerId = e.Id ORDER BY c.Name, d.Name, p.Name, dep.Name;
 -- Počet entít SELECT 'Employees' AS Entity, COUNT() AS Count FROM Employees UNION ALL SELECT 'Companies', COUNT() FROM Companies UNION ALL SELECT 'Divisions', COUNT() FROM Divisions UNION ALL SELECT 'Projects', COUNT() FROM Projects UNION ALL SELECT 'Departments', COUNT(*) FROM Departments;
 
-## 🏗️ Architektúra
-
-### Clean Architecture Layers
-┌────────────────────────────────────────┐ │         Controllers (API Layer)        │ │  - HTTP Endpoints                      │ │  - Request/Response Handling           │ └──────────────┬─────────────────────────┘ │ ▼ ┌────────────────────────────────────────┐ │      Services (Business Logic)        │ │  - Domain Rules                        │ │  - Validation                          │ │  - Orchestration                       │ └──────────────┬─────────────────────────┘ │ ▼ ┌────────────────────────────────────────┐ │     Repositories (Data Access)         │ │  - CRUD Operations                     │ │  - Query Building                      │ └──────────────┬─────────────────────────┘ │ ▼ ┌────────────────────────────────────────┐ │       Database (SQL Server)            │ │  - Data Persistence                    │ └────────────────────────────────────────┘
 
 ### Design Patterns
 - **Repository Pattern** - Abstrakcia dátového prístupu
