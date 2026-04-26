@@ -11,11 +11,9 @@
 - [Technológie](#technológie)
 - [Požiadavky](#požiadavky)
 - [Inštalácia a spustenie](#inštalácia-a-spustenie)
-- [Štruktúra projektu](#štruktúra-projektu)
 - [API Endpoints](#api-endpoints)
 - [Testovanie](#testovanie)
 - [Databáza](#databáza)
-- [Architektúra](#architektúra)
 - [Validácie](#validácie)
 - [Features](#features)
 
@@ -106,53 +104,6 @@ dotnet run --project OrganizationStructure.Api
 | HTTPS | `https://localhost:5001` |
 | HTTP | `http://localhost:5000` |
 | Scalar UI | `https://localhost:5001/scalar/v1` |
-
----
-
-## Štruktúra projektu
-
-```
-OrganizationStructure.Api/
-├── Controllers/              # API Endpoints
-│   ├── EmployeesController.cs
-│   ├── CompaniesController.cs
-│   ├── DivisionsController.cs
-│   ├── ProjectsController.cs
-│   └── DepartmentsController.cs
-│
-├── Domain/
-│   └── Entities/             # Domain modely
-│       ├── Employee.cs
-│       ├── Company.cs
-│       ├── Division.cs
-│       ├── Project.cs
-│       └── Department.cs
-│
-├── DTOs/                     # Data Transfer Objects
-│   ├── Employees/
-│   ├── Companies/
-│   ├── Divisions/
-│   ├── Projects/
-│   └── Departments/
-│
-├── Services/                 # Business logika
-│   ├── Interfaces/
-│   └── Implementations/
-│
-├── Repositories/             # Dátový prístup
-│   ├── IRepository.cs
-│   └── Repository.cs
-│
-├── Validators/               # FluentValidation pravidlá
-│   └── CreateOrUpdate*Validator.cs
-│
-├── Data/
-│   └── ApplicationDbContext.cs
-│
-├── Migrations/
-│   └── 20260426182544_InitialCreate.cs
-│   └── init_setup.sql       # SQL script pre manuálne vytvorenie DB
-```
 
 ---
 
@@ -248,51 +199,7 @@ curl https://localhost:5001/api/employees --insecure
 
 ## Databáza
 
-### Dátový model
 
-```
-Employee            Company
-─────────────       ─────────────
-Id (PK)             Id (PK)
-Title               Name
-FirstName           Code (UQ)
-LastName            DirectorId ──→ Employee
-Phone               CreatedAt
-Email (UQ)          UpdatedAt
-CreatedAt               │
-UpdatedAt               ↓
-                    Division
-                    ─────────────
-                    Id (PK)
-                    Name
-                    Code
-                    CompanyId ──→ Company
-                    ManagerId ──→ Employee
-                    CreatedAt
-                    UpdatedAt
-                        │
-                        ↓
-                    Project
-                    ─────────────
-                    Id (PK)
-                    Name
-                    Code
-                    DivisionId ──→ Division
-                    ManagerId  ──→ Employee
-                    CreatedAt
-                    UpdatedAt
-                        │
-                        ↓
-                    Department
-                    ─────────────
-                    Id (PK)
-                    Name
-                    Code
-                    ProjectId ──→ Project
-                    ManagerId ──→ Employee
-                    CreatedAt
-                    UpdatedAt
-```
 
 ### Pravidlá integrity
 
@@ -334,34 +241,6 @@ SELECT 'Departments',COUNT(*) FROM Departments;
 
 ---
 
-## Architektúra
-
-### Clean Architecture vrstvy
-
-```
-┌─────────────────────────────────────────┐
-│         Controllers  (API Layer)        │
-│  HTTP Endpoints · Request/Response      │
-└──────────────────┬──────────────────────┘
-                   │
-                   ↓
-┌─────────────────────────────────────────┐
-│       Services  (Business Logic)        │
-│  Domain pravidlá · Validácia · Orchestrácia │
-└──────────────────┬──────────────────────┘
-                   │
-                   ↓
-┌─────────────────────────────────────────┐
-│      Repositories  (Data Access)        │
-│  CRUD operácie · Query building         │
-└──────────────────┬──────────────────────┘
-                   │
-                   ↓
-┌─────────────────────────────────────────┐
-│        Database  (SQL Server)           │
-│  Data persistence · EF Core migrations  │
-└─────────────────────────────────────────┘
-```
 
 ### Design patterns
 
