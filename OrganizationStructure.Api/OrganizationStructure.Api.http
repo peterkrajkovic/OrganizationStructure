@@ -1,0 +1,6 @@
+@OrganizationStructure.Api_HostAddress = http://localhost:5248
+
+GET {{OrganizationStructure.Api_HostAddress}}/companies/
+Accept: application/json
+
+###
